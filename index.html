@@ -3,7 +3,88 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@2.4.1/dist/email.min.js"></script>
   <script src="https://kit.fontawesome.com/40a3572c09.js" crossorigin="anonymous"></script>
+   <script type="text/javascript">
+     (function () {
+       emailjs.init('user_2VZT14aZocQVYvGkIImPa');
+     })();
+   </script>
+
+   <script type="text/javascript">
+   function validateEmail(emailField){
+   var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+
+   if (emailField.value == "" || reg.test(emailField.value) == true)
+   {
+   document.getElementById("emailError").innerHTML = 'The email is valid';
+   document.getElementById("emailError").className = "valid-feedback";
+   document.getElementById("email").className = "form-control is-valid";
+   return false;
+   }
+   document.getElementById("emailError").innerHTML = 'Invalid Email Address';
+   document.getElementById("emailError").className = "invalid-feedback";
+   document.getElementById("email").className = "form-control is-invalid";
+   return true;
+
+   }
+   function validateName(nameField){
+     var hasNumber = /\d/;
+     if (nameField.value == "" || hasNumber.test(nameField.value) == false) {
+       document.getElementById("nameError").innerHTML = 'The name looks good';
+       document.getElementById("nameError").className = "valid-feedback";
+       document.getElementById("name").className = "form-control is-valid";
+        
+        return false;
+     }
+     document.getElementById("nameError").innerHTML = 'Please enter name without numbers';
+     document.getElementById("nameError").className = "invalid-feedback";
+     document.getElementById("name").className = "form-control is-invalid";
+     return true;
+   }
+
+   function validateMessage(messageField){
+   if (messageField.value != "") {
+   document.getElementById("messageError").innerHTML = '';
+   document.getElementById("messageError").className = "valid-feedback";
+   document.getElementById("message").className = "form-control is-valid";
+
+   return false;
+   }
+   document.getElementById("messageError").innerHTML = 'The message is required';
+   document.getElementById("messageError").className = "invalid-feedback";
+   document.getElementById("message").className = "form-control is-invalid";
+   return true;
+   }
+
+     document.addEventListener('click', function (event) {
+    var nameValue = document.getElementById("name").value;
+    var emailValue = document.getElementById("email").value;
+    var messageValue = document.getElementById("message").value;
+
+  var templateParams ={
+    from_name: emailValue,
+    to_name: 'aarshoza@gmail.com',
+    message: messageValue,
+    name: nameValue
+  };
+    // this.id= 'contact-form'
+
+     // If the clicked element doesn't have the right selector, bail
+     if (!event.target.matches('#submit')) return;
+
+     // Don't follow the link
+     event.preventDefault();
+
+     // Log the clicked element in the console
+    //  emailjs.sendForm('service_vm0usri','template_2bdwvqv', this);
+    emailjs.send('service_vm0usri', 'template_2bdwvqv', templateParams);
+
+     }, false);
+
+   </script>
+
+
   <link rel="stylesheet" href="css/bootstrap.css">
 
   <link rel='stylesheet' href='css/style.css'>
@@ -263,23 +344,29 @@
           </button>
         </div>
         <div class="modal-body">
-          <form>
+          <form id='contact-form'>
             <div class="form-group">
               <label for="name">Name</label>
-              <input type="text" class="form-control">
+              <input id="name" name="name" type="text" class="form-control" required
+                onchange="validateName(this);">
+              <div id="nameError" class="" />
             </div>
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="email" class="form-control">
+              <input onchange="validateEmail(this);" id="email" required name="from_name" type="email"
+                class="form-control">
+                <div id="emailError" class="" />
             </div>
             <div class="form-group">
               <label for="message">Message</label>
-              <textarea class="form-control"></textarea>
+              <textarea id="message" name="message" class="form-control" required
+                onchange="validateMessage(this)"></textarea>
+              <div id="messageError" class="" />
             </div>
           </form>
         </div>
         <div class='modal-footer'>
-          <button class="btn btn-primary btn-block" data-dismiss='modal'>Submit</button>
+          <button id="submit" class="btn btn-primary btn-block" data-dismiss='modal' type="submit" value="Send">Submit</button>
         </div>
       </div>
     </div>
