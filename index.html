@@ -79,7 +79,27 @@
 
      // Log the clicked element in the console
     //  emailjs.sendForm('service_vm0usri','template_2bdwvqv', this);
-    emailjs.send('service_vm0usri', 'template_2bdwvqv', templateParams);
+    emailjs.send('service_vm0usri', 'template_2bdwvqv', templateParams)
+       then(function(response) {
+                document.getElementById("name").innerHTML = "";
+                document.getElementById("email").innerHTML = "";
+                document.getElementById("message").innerHTML = "";
+                var sendButton = document.getElementById("submit");
+                sendButton.setAttribute('disabled','');
+                var submitText = document.getElementById("submitText");
+                submitText.innerHTML = 'Sit back and relax your Email is sent';
+                submitText.setAttribute('class','text-success')
+            }, function(error) {
+            console.log('FAILED...', error);
+            document.getElementById("name").innerHTML = "";
+            document.getElementById("email").innerHTML = "";
+            document.getElementById("message").innerHTML = "";
+            var sendButton = document.getElementById("submit");
+            sendButton.setAttribute('disabled','');
+            var submitText = document.getElementById("submitText");
+            submitText.innerHTML = 'Cannot send email please try again after some time';
+            submitText.setAttribute('class','text-danger')
+            });
 
      }, false);
 
@@ -368,6 +388,7 @@
         </div>
         <div class='modal-footer'>
           <button id="submit" class="btn btn-primary btn-block" data-dismiss='modal' type="submit" value="Send">Submit</button>
+          <p id="submitText" class=""></p>
         </div>
       </div>
     </div>
